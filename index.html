@@ -1,0 +1,552 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun, Jihan ♡</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="locked">
+
+    <!-- LAYAR PIN -->
+    <div class="pin-screen" id="pinScreen">
+        <div class="pin-box" id="pinBox">
+            <div class="pin-heart">♡</div>
+            <p class="eyebrow">SEBUAH KEJUTAN KECIL UNTUKMU</p>
+            <h1>Hai, Jihan ♡</h1>
+            <p class="pin-description">
+                Sebelum masuk ke dunia kecil yang kubuat untukmu,
+                masukkan dulu empat angka rahasianya, ya sayang.
+            </p>
+
+            <div class="pin-dots" id="pinDots">
+                <span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="pin-keypad">
+                <button type="button" data-pin="1">1</button>
+                <button type="button" data-pin="2">2</button>
+                <button type="button" data-pin="3">3</button>
+                <button type="button" data-pin="4">4</button>
+                <button type="button" data-pin="5">5</button>
+                <button type="button" data-pin="6">6</button>
+                <button type="button" data-pin="7">7</button>
+                <button type="button" data-pin="8">8</button>
+                <button type="button" data-pin="9">9</button>
+                <button type="button" id="pinDelete" aria-label="Hapus angka">⌫</button>
+                <button type="button" data-pin="0">0</button>
+                <button type="button" id="pinClear" aria-label="Hapus semua">C</button>
+            </div>
+
+            <p class="pin-error" id="pinError" aria-live="polite"></p>
+            <p class="pin-hint">Petunjuk: Empat angka yang punya arti spesial ♡</p>
+            <p class="pin-from">With love, Alif</p>
+        </div>
+    </div>
+
+    <!-- MINI GAME LABIRIN -->
+    <div class="maze-screen hidden" id="mazeScreen">
+        <div class="maze-box">
+            <div class="maze-heading">
+                <p class="eyebrow">SATU TANTANGAN SEBELUM KEJUTAN</p>
+                <h2>Labirin Menuju <em>Hatiku</em> ♡</h2>
+                <p>
+                    Bantu hati kecil ini menemukan hadiah dari Alif.
+                    Cari jalan yang benar, ya Jihan!
+                </p>
+            </div>
+
+            <div class="maze-status">
+                <span>♡ Kamu</span>
+                <span>🎁 Tujuan</span>
+            </div>
+
+            <div class="maze-grid" id="mazeGrid"
+                 role="grid" aria-label="Permainan labirin"></div>
+
+            <p class="maze-message" id="mazeMessage" aria-live="polite">
+                Gunakan tombol arah atau keyboard untuk bergerak.
+            </p>
+
+            <div class="maze-controls">
+                <button type="button" data-direction="up" aria-label="Atas">↑</button>
+                <div class="maze-control-row">
+                    <button type="button" data-direction="left" aria-label="Kiri">←</button>
+                    <button type="button" data-direction="down" aria-label="Bawah">↓</button>
+                    <button type="button" data-direction="right" aria-label="Kanan">→</button>
+                </div>
+            </div>
+
+            <button type="button" class="btn secondary maze-reset"
+                    id="resetMaze">Ulangi Labirin ↻</button>
+
+            <div class="maze-win hidden" id="mazeWin">
+                <div class="maze-win-heart">♡</div>
+                <h3>Yeay! Kamu Berhasil, Sayang!</h3>
+                <p>
+                    Kamu sudah menemukan jalan menuju hatiku.
+                    Sekarang ada hadiah ulang tahun yang menunggumu.
+                </p>
+                <button type="button" class="btn" id="enterWebsite">
+                    Buka Hadiah dari Alif ♡
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEKORASI DAN MUSIK -->
+    <div id="hearts" aria-hidden="true"></div>
+    <div id="confetti" aria-hidden="true"></div>
+    <audio id="music" src="romantic.mp3" loop preload="metadata"></audio>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <a href="#beranda" class="logo">Jihan <span>♡</span></a>
+
+        <button type="button" class="menu-toggle" id="menuToggle"
+                aria-label="Buka menu" aria-expanded="false">☰</button>
+
+        <nav id="nav">
+            <a href="#beranda" class="active">Beranda</a>
+            <a href="#kenangan">Kenangan Kita</a>
+            <a href="#galeri">Galeri</a>
+            <a href="#surat">Surat Untukmu</a>
+            <a href="#harapan">Harapan</a>
+        </nav>
+
+        <!-- PEMUTAR MUSIK DENGAN FOTO -->
+        <div class="music-wrapper">
+            <button type="button" id="musicBtn" class="music-btn"
+                    aria-label="Buka pemutar musik"
+                    aria-expanded="false">♫</button>
+
+            <div class="music-player" id="musicPlayer">
+                <div class="music-cover">
+                    <img src="cover.jpg" alt="Foto sampul lagu">
+                </div>
+
+                <div class="music-info">
+                    <span class="music-label">LAGU UNTUK JIHAN ♡</span>
+                    <h4>Risk it all</h4>
+                    <p>Bruno Mars</p>
+                </div>
+
+                <button type="button" class="music-control"
+                        id="musicControl" aria-label="Putar musik">▶</button>
+
+                <div class="music-progress" id="musicProgress"
+                     role="slider" tabindex="0"
+                     aria-label="Posisi lagu"
+                     aria-valuemin="0" aria-valuemax="100"
+                     aria-valuenow="0">
+                    <div class="music-progress-fill"
+                         id="musicProgressFill"></div>
+                </div>
+
+                <div class="music-time">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- BERANDA -->
+        <section id="beranda" class="page active hero">
+            <div class="hero-inner">
+                <div class="heart-big">♡</div>
+                <p class="eyebrow">
+                    SEBUAH DUNIA KECIL YANG DIBUAT KHUSUS UNTUKMU
+                </p>
+                <h1>Selamat Ulang Tahun,<br><em>Jihan.</em></h1>
+                <p class="lead">
+                    Untuk perempuan yang membuat hari-hari biasa
+                    terasa jauh lebih istimewa.
+                </p>
+
+                <div class="quote">
+                    “<span id="typedQuote"></span><span class="cursor">|</span>”
+                </div>
+
+                <p class="muted">
+                    Semoga hari ini membawa senyum yang paling indah untukmu.
+                </p>
+
+                <button type="button" class="btn" data-go="kenangan">
+                    Mulai Cerita Kita ♡
+                </button>
+
+                <p class="signature">Dibuat dengan cinta, oleh Alif</p>
+            </div>
+        </section>
+
+        <!-- KENANGAN -->
+        <section id="kenangan" class="page">
+            <div class="heading">
+                <p class="eyebrow">SETIAP DETIK PUNYA CERITANYA</p>
+                <h2>Kenangan <em>Kita</em></h2>
+                <p>Hal-hal sederhana yang selalu punya tempat istimewa di hati.</p>
+            </div>
+
+            <div class="timeline">
+                <article class="memory">
+                    <span>01</span>
+                    <h3>Awal Cerita Kita</h3>
+                    <p>
+                        Siapa sangka, dari sebuah pertemuan sederhana,
+                        kamu bisa menjadi seseorang yang begitu berarti untukku.
+                    </p>
+                </article>
+
+                <article class="memory">
+                    <span>02</span>
+                    <h3>Tawa-Tawa Kecil</h3>
+                    <p>
+                        Obrolan random, candaan receh, dan hal-hal kecil
+                        bersamamu selalu berhasil membuat hariku lebih hangat.
+                    </p>
+                </article>
+
+                <article class="memory">
+                    <span>03</span>
+                    <h3>Orang Favoritku</h3>
+                    <p>
+                        Tanpa sadar, kamu menjadi orang yang ingin kuceritakan
+                        banyak hal, baik saat senang maupun lelah.
+                    </p>
+                </article>
+
+                <article class="memory">
+                    <span>04</span>
+                    <h3>Cerita yang Belum Selesai</h3>
+                    <p>
+                        Semoga masih banyak perjalanan, tawa, dan ulang tahun
+                        yang bisa kita rayakan bersama.
+                    </p>
+                </article>
+            </div>
+
+            <button type="button" class="btn next" data-go="galeri">
+                Lihat Galeri Kita →
+            </button>
+        </section>
+
+        <!-- GALERI -->
+        <section id="galeri" class="page">
+            <div class="heading">
+                <p class="eyebrow">POTONGAN KECIL DARI KEBAHAGIAAN</p>
+                <h2>Galeri <em>Kenangan</em></h2>
+                <p>Karena ada momen yang rasanya ingin kusimpan selamanya.</p>
+            </div>
+
+            <div class="gallery">
+                <button type="button" class="photo">
+                    <img src="foto1.jpg" alt="Kenangan pertama">
+                    <span>Senyum Favoritku ♡</span>
+                </button>
+                <button type="button" class="photo">
+                    <img src="foto2.jpg" alt="Kenangan kedua">
+                    <span>Hari yang Indah</span>
+                </button>
+                <button type="button" class="photo">
+                    <img src="foto3.jpg" alt="Kenangan ketiga">
+                    <span>Hal-Hal Sederhana</span>
+                </button>
+                <button type="button" class="photo">
+                    <img src="foto4.jpg" alt="Kenangan keempat">
+                    <span>Selalu Istimewa</span>
+                </button>
+                <button type="button" class="photo">
+                    <img src="foto5.jpg" alt="Kenangan kelima">
+                    <span>Cerita Kita ♡</span>
+                </button>
+            </div>
+
+            <p class="handwriting">
+                Kalau kenangan adalah bintang, kamu adalah langit favoritku.
+            </p>
+
+            <button type="button" class="btn next" data-go="surat">
+                Ada Surat Untukmu →
+            </button>
+        </section>
+
+        <!-- SURAT -->
+        <section id="surat" class="page">
+            <div class="heading">
+                <p class="eyebrow">ADA HAL YANG INGIN KUSAMPAIKAN</p>
+                <h2>Surat <em>Untukmu</em></h2>
+                <p>Sedikit kata yang kutulis sepenuh hati.</p>
+            </div>
+
+            <div id="envelope" class="envelope">
+                <div class="envelope-icon">✉</div>
+                <h3>Untuk Jihan, dengan cinta ♡</h3>
+                <p>Ada sesuatu yang kusimpan di dalam surat kecil ini.</p>
+                <button type="button" id="openLetter" class="btn">
+                    Buka Suratnya
+                </button>
+            </div>
+
+            <article id="letter" class="letter hidden">
+                <div class="letter-heart">♡</div>
+                <p class="eyebrow">DI HARI ISTIMEWAMU</p>
+                <h3>Untuk Jihan tersayang,</h3>
+
+                <p>
+                   Happy birthday for 19 love!!. Hari ini adalah hari istimewa
+                   karena telah lahir nya seseorang yang kuat dan pemberani
+                </p>
+                <p>
+                    Aku mungkin tidak selalu pandai merangkai kata, tetapi
+                    aku ingin kamu tahu betapa bersyukurnya aku bisa
+                    mengenalmu dan menjadi bagian dari ceritamu.
+                </p>
+                <p>
+                    Terima kasih untuk setiap senyum, perhatian, cerita,
+                    dan tawa yang kamu bagi. Bahkan hal-hal sederhana
+                    terasa berbeda ketika dijalani bersamamu.
+                </p>
+                <p>
+                    Di usia barumu ini, semoga kamu selalu sehat, bahagia,
+                    dikelilingi orang-orang baik, dan semakin dekat
+                    dengan semua impianmu.
+                </p>
+                <p>
+                    Kalau nanti ada hari yang berat, semoga kamu tidak
+                    lupa bahwa kamu berharga dan dicintai.
+                </p>
+                <p>
+                    Aku ingin terus belajar menjadi seseorang yang bisa
+                    membuatmu tersenyum, menemanimu tumbuh, dan merayakan
+                    banyak momen indah bersamamu.
+                </p>
+                <p>
+                    Selamat ulang tahun, perempuan favoritku.
+                    Aku sayang kamu. ♡
+                </p>
+
+                <img class="letter-photo"
+                     src="foto6.jpg" alt="Foto Jihan">
+
+                <div class="letter-sign">
+                    Dengan sepenuh hati,
+                    <strong>Alif ♡</strong>
+                </div>
+
+                <button type="button" id="closeLetter"
+                        class="btn secondary">Tutup Surat</button>
+            </article>
+
+            <button type="button" class="btn next" data-go="harapan">
+                Masih Ada Kejutan →
+            </button>
+        </section>
+
+        <!-- HARAPAN -->
+        <section id="harapan" class="page">
+            <div class="heading">
+                <p class="eyebrow">
+                    SEDIKIT KEAJAIBAN UNTUK HARI SPESIALMU
+                </p>
+                <h2>Doa & <em>Harapan</em></h2>
+                <p>Ikuti kejutan kecil ini satu per satu, ya sayang.</p>
+            </div>
+
+            <div class="steps" id="steps">
+                <span class="current">1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+            </div>
+
+            <div class="wish-card">
+
+                <!-- KEJUTAN 1 -->
+                <div id="step1" class="wish-step active">
+                    <h3>Tiup Lilinnya, Sayang! 🎂</h3>
+                    <p>
+                        Tutup mata sebentar, buat satu harapan,
+                        lalu matikan lilinnya.
+                    </p>
+
+                    <div class="cake-scene">
+                        <div class="cake" id="cake">
+                            <div class="candles">
+                                <div class="candle"><i></i></div>
+                                <div class="candle"><i></i></div>
+                                <div class="candle"><i></i></div>
+                            </div>
+                            <div class="cake-top"></div>
+                            <div class="layer one"></div>
+                            <div class="layer two"></div>
+                            <div class="layer three"></div>
+                            <div class="plate"></div>
+                        </div>
+                    </div>
+
+                    <p id="cakeMessage" class="handwriting small">
+                        Semoga semua harapan indahmu terwujud ♡
+                    </p>
+
+                    <button type="button" id="blow" class="btn">
+                        Tiup Lilin ♡
+                    </button>
+                    <button type="button" id="to2" class="btn hidden">
+                        Buka Kejutan Pertama →
+                    </button>
+                </div>
+
+                <!-- KEJUTAN 2 -->
+                <div id="step2" class="wish-step">
+                    <h3>Hadiah Kecil Untukmu 🎁</h3>
+                    <p>
+                        Tidak semua hadiah bisa dibungkus.
+                        Ada juga yang datang dari hati.
+                    </p>
+
+                    <button type="button" id="gift" class="gift"
+                            aria-label="Buka hadiah">
+                        <span class="gift-bow">🎀</span>
+                        <span class="gift-lid"></span>
+                        <span class="gift-body"></span>
+                        <span class="gift-ribbon"></span>
+                    </button>
+
+                    <div id="giftText" class="hidden reveal">
+                        <h3>Kejutan! ♡</h3>
+                        <p>
+                            Kalau aku bisa mengumpulkan seluruh kebahagiaan
+                            di dunia, semuanya ingin kuberikan untukmu.
+                        </p>
+                        <p>
+                            Terima kasih sudah menjadi salah satu
+                            hal terindah dalam hidupku.
+                        </p>
+                        <button type="button" id="to3" class="btn">
+                            Lanjutkan Kejutan →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KEJUTAN 3 -->
+                <div id="step3" class="wish-step">
+                    <h3>Titip Harapan ke Bintang 🌠</h3>
+                    <p>
+                        Tulis satu harapan untuk tahun barumu.
+                        Biar bintang yang menjaganya.
+                    </p>
+
+                    <textarea id="wishInput" maxlength="300"
+                        placeholder="Tulis harapanmu di sini..."></textarea>
+
+                    <button type="button" id="sendWish" class="btn">
+                        Kirim Harapanku ✦
+                    </button>
+
+                    <div id="wishSent" class="hidden reveal">
+                        <div class="stars-fly">✦ ✧ ★</div>
+                        <h3>Harapanmu sudah terbang ke bintang ♡</h3>
+                        <p>
+                            Semoga satu per satu impianmu
+                            menjadi kenyataan.
+                        </p>
+                        <button type="button" id="to4" class="btn">
+                            Lihat Hal Istimewa Lainnya →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KEJUTAN 4 -->
+                <div id="step4" class="wish-step">
+                    <h3>5 Alasan Kamu Istimewa 💕</h3>
+                    <p>
+                        Sentuh semua kartu untuk membuka
+                        pesan di dalamnya.
+                    </p>
+
+                    <div class="reasons">
+                        <button type="button" class="reason">
+                            <span>♡ 01</span>
+                            <small>Senyummu selalu berhasil membuat hariku lebih baik.</small>
+                        </button>
+                        <button type="button" class="reason">
+                            <span>♡ 02</span>
+                            <small>Bersamamu, hal sederhana terasa berharga.</small>
+                        </button>
+                        <button type="button" class="reason">
+                            <span>♡ 03</span>
+                            <small>Kamu punya caramu sendiri untuk membuatku bahagia.</small>
+                        </button>
+                        <button type="button" class="reason">
+                            <span>♡ 04</span>
+                            <small>Aku bisa menjadi diriku sendiri saat bersamamu.</small>
+                        </button>
+                        <button type="button" class="reason">
+                            <span>♡ 05</span>
+                            <small>Karena menjadi dirimu sendiri sudah sangat istimewa.</small>
+                        </button>
+                    </div>
+
+                    <p id="reasonCount">0 dari 5 hati terbuka</p>
+                    <button type="button" id="to5" class="btn hidden">
+                        Satu Hal Terakhir, Sayang →
+                    </button>
+                </div>
+
+                <!-- KEJUTAN 5 -->
+                <div id="step5" class="wish-step final">
+                    <div class="heart-big">♡</div>
+                    <p class="eyebrow">PESAN TERAKHIR DARI ALIF</p>
+
+                    <h2>
+                        Selamat Ulang Tahun,<br>
+                        <em>Sayangku.</em>
+                    </h2>
+
+                    <p>
+                        Entah berapa banyak ulang tahun yang akan datang,
+                        aku berharap bisa terus ada untuk merayakannya
+                        bersamamu.
+                    </p>
+
+                    <p>
+                        Semoga hidup selalu mempertemukanmu dengan
+                        hal-hal baik, doa-doa yang terkabul,
+                        dan kebahagiaan yang tak pernah habis.
+                    </p>
+
+                    <p class="handwriting">
+                        Kamu pantas mendapatkan semua
+                        hal indah di dunia ini.
+                    </p>
+
+                    <div class="letter-sign">
+                        Dengan seluruh cintaku,
+                        <strong>Alif ♡</strong>
+                    </div>
+
+                    <button type="button" id="replay" class="btn secondary">
+                        Ulangi Kejutannya ↻
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>Dibuat dengan ♡ khusus untuk Jihan — Alif</footer>
+
+    <!-- POPUP FOTO -->
+    <div id="lightbox" class="lightbox hidden">
+        <button type="button" id="closeLightbox"
+                aria-label="Tutup foto">×</button>
+        <img id="lightboxImg" alt="Foto kenangan">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
